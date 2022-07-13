@@ -26,7 +26,8 @@ class InputTextField extends StatelessWidget {
       textInputAction: TextInputAction.next,
       style: stylePoppins(
         16,
-        const Color.fromRGBO(104, 103, 119, 0.36),
+        // const Color.fromRGBO(104, 103, 119, 0.36),
+        Colors.black,
         FontWeight.w500,
       ),
       decoration: InputDecoration(
@@ -35,26 +36,26 @@ class InputTextField extends StatelessWidget {
         filled: true,
         fillColor: Colors.white,
         labelStyle: const TextStyle(
-          color: Colors.black54,
+          color: Color.fromRGBO(226, 227, 228, 1),
         ),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
           borderSide: const BorderSide(
-            color: Colors.black38,
+            color: Color.fromRGBO(226, 227, 228, 1),
             width: 0.5,
           ),
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
           borderSide: const BorderSide(
-            color: Colors.black38,
+            color: Color.fromRGBO(226, 227, 228, 1),
             width: 0.5,
           ),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
           borderSide: const BorderSide(
-            color: Colors.black38,
+            color: Color.fromRGBO(226, 227, 228, 1),
             width: 0.5,
           ),
         ),

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+enum DataState { loading, filled, error }
+
 const Color primaryColor = Color(0xFF2B637B);
 const Color secondaryColor = Color(0xFFE2E3E4);
 
