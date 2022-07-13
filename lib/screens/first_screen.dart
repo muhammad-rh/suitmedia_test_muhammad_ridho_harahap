@@ -29,96 +29,107 @@ class _FirstScreenState extends State<FirstScreen> {
     var height = mediaQueryData.size.height;
     var width = mediaQueryData.size.width;
     return Scaffold(
-      backgroundColor: Colors.blue,
-      body: Center(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.all(30.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              SizedBox(
-                height: height * 0.3,
-                child: const CircleAvatar(
-                  radius: 58,
-                  backgroundColor: Colors.white54,
-                  child: Icon(
-                    Icons.person_add_alt_rounded,
-                    size: 36,
-                    color: Colors.white,
+      body: Container(
+        height: height,
+        width: double.infinity,
+        decoration: const BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage(
+              'assets/background.png',
+            ),
+            fit: BoxFit.cover,
+          ),
+        ),
+        child: Center(
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.all(30.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                SizedBox(
+                  height: height * 0.3,
+                  child: const CircleAvatar(
+                    radius: 58,
+                    backgroundColor: Colors.white54,
+                    child: Icon(
+                      Icons.person_add_alt_rounded,
+                      size: 36,
+                      color: Colors.white,
+                    ),
                   ),
                 ),
-              ),
-              SizedBox(
-                height: height * 0.2,
-                child: Form(
-                  key: formKey,
+                SizedBox(
+                  height: height * 0.2,
+                  child: Form(
+                    key: formKey,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        InputTextField(
+                          controller: nameController,
+                          hintText: 'Name',
+                          validator: (value) {
+                            if (value!.isEmpty) {
+                              return ("Enter your name please!");
+                            }
+                            return null;
+                          },
+                        ),
+                        InputTextField(
+                          controller: palindromeController,
+                          hintText: 'Palindrome',
+                          validator: (value) {
+                            if (value!.isEmpty) {
+                              return ("Enter something please!");
+                            }
+                            return null;
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  height: height * 0.2,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      InputTextField(
-                        controller: nameController,
-                        hintText: 'Name',
-                        validator: (value) {
-                          if (value!.isEmpty) {
-                            return ("Enter your name please!");
+                      ButtonPrimary(
+                        label: 'CHECK',
+                        size: 16,
+                        fontWeight: FontWeight.w500,
+                        width: width,
+                        onPressed: () async {
+                          if (formKey.currentState!.validate()) {
+                            Provider.of<ProviderManager>(context, listen: false)
+                                .checkPalindrome(
+                              nameController.text,
+                              palindromeController.text,
+                              context,
+                            );
                           }
-                          return null;
                         },
                       ),
-                      InputTextField(
-                        controller: palindromeController,
-                        hintText: 'Palindrome',
-                        validator: (value) {
-                          if (value!.isEmpty) {
-                            return ("Enter something please!");
+                      ButtonPrimary(
+                        label: 'NEXT',
+                        size: 16,
+                        fontWeight: FontWeight.w500,
+                        width: width,
+                        onPressed: () {
+                          if (formKey.currentState!.validate()) {
+                            Provider.of<ProviderManager>(context, listen: false)
+                                .setUserName(nameController.text, context);
                           }
-                          return null;
                         },
                       ),
                     ],
                   ),
                 ),
-              ),
-              SizedBox(
-                height: height * 0.2,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    ButtonPrimary(
-                      label: 'CHECK',
-                      size: 16,
-                      fontWeight: FontWeight.w500,
-                      width: width,
-                      onPressed: () async {
-                        if (formKey.currentState!.validate()) {
-                          Provider.of<ProviderManager>(context, listen: false)
-                              .checkPalindrome(
-                            nameController.text,
-                            palindromeController.text,
-                            context,
-                          );
-                        }
-                      },
-                    ),
-                    ButtonPrimary(
-                      label: 'NEXT',
-                      size: 16,
-                      fontWeight: FontWeight.w500,
-                      width: width,
-                      onPressed: () {
-                        if (formKey.currentState!.validate()) {
-                          Provider.of<ProviderManager>(context, listen: false)
-                              .setUserName(nameController.text, context);
-                        }
-                      },
-                    ),
-                  ],
-                ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
