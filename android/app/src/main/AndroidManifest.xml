@@ -1,7 +1,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.suitmedia_test_muhammad_ridho_harahap">
+   <uses-permission android:name="android.permission.INTERNET"/>
    <application
-        android:label="suitmedia_test_muhammad_ridho_harahap"
+        android:label="Palindrome"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
