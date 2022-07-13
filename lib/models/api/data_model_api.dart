@@ -15,8 +15,6 @@ class DataModelApi {
         ResponseResultData responseResult =
             ResponseResultData.fromJson(response.data);
 
-        // print('Response : ${responseResult.data}');
-
         return responseResult.data;
       }
     } on DioError catch (e) {

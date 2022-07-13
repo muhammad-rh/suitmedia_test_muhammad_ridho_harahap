@@ -12,13 +12,23 @@ class ThirdScreen extends StatefulWidget {
 }
 
 class _ThirdScreenState extends State<ThirdScreen> {
-  ScrollController controller = ScrollController();
+  ScrollController scrollController = ScrollController();
 
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       Provider.of<ProviderManager>(context, listen: false).getData(context);
+    });
+
+    scrollController.addListener(() {
+      if (scrollController.position.pixels ==
+          scrollController.position.maxScrollExtent) {
+        WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+          Provider.of<ProviderManager>(context, listen: false)
+              .getMoreData(context);
+        });
+      }
     });
   }
 
@@ -50,7 +60,10 @@ class _ThirdScreenState extends State<ThirdScreen> {
         ),
       ),
       body: RefreshIndicator(
-        onRefresh: () async {},
+        onRefresh: () async {
+          Provider.of<ProviderManager>(context, listen: false)
+              .getMoreData(context);
+        },
         child: SingleChildScrollView(
           child: Column(
             children: [
@@ -75,19 +88,36 @@ class _ThirdScreenState extends State<ThirdScreen> {
                   }
 
                   return SizedBox(
-                    height: height,
+                    height: !value.nextPage ? height : 500,
                     child: ListView.separated(
                       padding: const EdgeInsets.all(20.0),
+                      controller: scrollController,
                       itemBuilder: (context, index) {
-                        return GestureDetector(
-                          onTap: () {},
-                          child: DataListCard(
-                            url: value.allDataList[index].avatar!,
-                            firstName: value.allDataList[index].firstName!,
-                            lastName: value.allDataList[index].lastName!,
-                            email: value.allDataList[index].email!,
-                          ),
-                        );
+                        if (index == value.allDataList.length) {
+                          return Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Center(
+                              child: Opacity(
+                                opacity: Provider.of<ProviderManager>(context,
+                                            listen: false)
+                                        .isLoading
+                                    ? 1.0
+                                    : 00,
+                                child: const CircularProgressIndicator(),
+                              ),
+                            ),
+                          );
+                        } else {
+                          return GestureDetector(
+                            onTap: () {},
+                            child: DataListCard(
+                              url: value.allDataList[index].avatar!,
+                              firstName: value.allDataList[index].firstName!,
+                              lastName: value.allDataList[index].lastName!,
+                              email: value.allDataList[index].email!,
+                            ),
+                          );
+                        }
                       },
                       separatorBuilder: (context, index) {
                         return const Divider(

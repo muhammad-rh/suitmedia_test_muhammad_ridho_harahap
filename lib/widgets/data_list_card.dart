@@ -21,7 +21,7 @@ class DataListCard extends StatelessWidget {
         child: SizedBox.fromSize(
           child: Image.network(
             url,
-            fit: BoxFit.cover,
+            fit: BoxFit.contain,
           ),
         ),
       ),

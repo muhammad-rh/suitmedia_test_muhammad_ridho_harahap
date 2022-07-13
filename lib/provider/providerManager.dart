@@ -1,6 +1,7 @@
 // ignore_for_file: file_names
 
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:suitmedia_test_muhammad_ridho_harahap/models/api/data_model_api.dart';
 import 'package:suitmedia_test_muhammad_ridho_harahap/models/data_model.dart';
 import 'package:suitmedia_test_muhammad_ridho_harahap/shared/constant.dart';
@@ -9,6 +10,9 @@ class ProviderManager extends ChangeNotifier {
   DataState dataState = DataState.loading;
 
   String userName = '';
+  bool isLoading = false;
+  bool nextPage = true;
+  int page = 1;
 
   final DataModelApi _dataModelApi = DataModelApi();
   List<Data> allDataList = [];
@@ -71,15 +75,47 @@ class ProviderManager extends ChangeNotifier {
   }
 
   Future getData(var context) async {
-    changeState(DataState.loading);
-
     try {
-      allDataList = await _dataModelApi.getDataByPage(1, context);
+      List<Data> tempDataList = [];
+      tempDataList = await _dataModelApi.getDataByPage(page, context);
+
+      allDataList.addAll(tempDataList);
 
       changeState(DataState.filled);
     } catch (e) {
       print('Error : $e');
       changeState(DataState.error);
+    }
+  }
+
+  Future getMoreData(var context) async {
+    if (nextPage == true) {
+      page += 1;
+      try {
+        isLoading = true;
+
+        var res = await getData(context);
+
+        if (res == null) {
+          nextPage = false;
+        }
+
+        isLoading = false;
+        changeState(DataState.filled);
+      } catch (e) {
+        print('Error : $e');
+        changeState(DataState.error);
+      }
+    } else {
+      Fluttertoast.showToast(
+        msg: 'You have reached end of list',
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIosWeb: 1,
+        backgroundColor: Colors.yellow.shade600,
+        textColor: darkColor,
+        fontSize: 16.0,
+      );
     }
   }
 }
