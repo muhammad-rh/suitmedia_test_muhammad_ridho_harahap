@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:suitmedia_test_muhammad_ridho_harahap/provider/prodiverManager.dart';
+import 'package:suitmedia_test_muhammad_ridho_harahap/provider/providerManager.dart';
 import 'package:suitmedia_test_muhammad_ridho_harahap/shared/constant.dart';
 import 'package:suitmedia_test_muhammad_ridho_harahap/widgets/button_primary.dart';
 
@@ -29,7 +29,7 @@ class _SecondScreenState extends State<SecondScreen> {
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(0.5),
           child: Container(
-            color: Colors.black,
+            color: secondaryColor,
             height: 0.5,
           ),
         ),

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:suitmedia_test_muhammad_ridho_harahap/provider/prodiverManager.dart';
+import 'package:suitmedia_test_muhammad_ridho_harahap/provider/providerManager.dart';
 import 'package:suitmedia_test_muhammad_ridho_harahap/widgets/button_primary.dart';
 import 'package:suitmedia_test_muhammad_ridho_harahap/widgets/input_text_field.dart';
 

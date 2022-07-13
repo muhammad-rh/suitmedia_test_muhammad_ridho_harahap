@@ -1,12 +1,17 @@
 // ignore_for_file: file_names
 
 import 'package:flutter/material.dart';
+import 'package:suitmedia_test_muhammad_ridho_harahap/models/api/data_model_api.dart';
+import 'package:suitmedia_test_muhammad_ridho_harahap/models/data_model.dart';
 import 'package:suitmedia_test_muhammad_ridho_harahap/shared/constant.dart';
 
 class ProviderManager extends ChangeNotifier {
   DataState dataState = DataState.loading;
 
   String userName = '';
+
+  final DataModelApi _dataModelApi = DataModelApi();
+  List<Data> allDataList = [];
 
   void changeState(DataState state) {
     dataState = state;
@@ -62,6 +67,19 @@ class ProviderManager extends ChangeNotifier {
       Navigator.pushNamed(context, '/secondScreen');
     } catch (e) {
       print('Error : $e');
+    }
+  }
+
+  Future getData(var context) async {
+    changeState(DataState.loading);
+
+    try {
+      allDataList = await _dataModelApi.getDataByPage(1, context);
+
+      changeState(DataState.filled);
+    } catch (e) {
+      print('Error : $e');
+      changeState(DataState.error);
     }
   }
 }

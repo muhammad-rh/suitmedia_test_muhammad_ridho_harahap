@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:suitmedia_test_muhammad_ridho_harahap/provider/providerManager.dart';
 import 'package:suitmedia_test_muhammad_ridho_harahap/shared/constant.dart';
+import 'package:suitmedia_test_muhammad_ridho_harahap/widgets/data_list_card.dart';
 
 class ThirdScreen extends StatefulWidget {
   const ThirdScreen({Key? key}) : super(key: key);
@@ -9,6 +12,16 @@ class ThirdScreen extends StatefulWidget {
 }
 
 class _ThirdScreenState extends State<ThirdScreen> {
+  ScrollController controller = ScrollController();
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      Provider.of<ProviderManager>(context, listen: false).getData(context);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     var mediaQueryData = MediaQuery.of(context);
@@ -24,7 +37,7 @@ class _ThirdScreenState extends State<ThirdScreen> {
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(0.5),
           child: Container(
-            color: Colors.black,
+            color: secondaryColor,
             height: 0.5,
           ),
         ),
@@ -36,14 +49,60 @@ class _ThirdScreenState extends State<ThirdScreen> {
           },
         ),
       ),
-      body: Column(
-        children: [
-          Expanded(
-            child: Column(
-              children: [],
-            ),
+      body: RefreshIndicator(
+        onRefresh: () async {},
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              Consumer<ProviderManager>(
+                builder: (context, value, child) {
+                  if (value.dataState == DataState.loading) {
+                    return const Center(
+                      child: RefreshProgressIndicator(),
+                    );
+                  }
+
+                  if (value.dataState == DataState.error) {
+                    return const Center(
+                      child: Text('Something went wrong'),
+                    );
+                  }
+
+                  if (value.allDataList.isEmpty) {
+                    return const Center(
+                      child: Text('Nothing here, refresh page please!'),
+                    );
+                  }
+
+                  return SizedBox(
+                    height: height,
+                    child: ListView.separated(
+                      padding: const EdgeInsets.all(20.0),
+                      itemBuilder: (context, index) {
+                        return GestureDetector(
+                          onTap: () {},
+                          child: DataListCard(
+                            url: value.allDataList[index].avatar!,
+                            firstName: value.allDataList[index].firstName!,
+                            lastName: value.allDataList[index].lastName!,
+                            email: value.allDataList[index].email!,
+                          ),
+                        );
+                      },
+                      separatorBuilder: (context, index) {
+                        return const Divider(
+                          thickness: 0.5,
+                          color: secondaryColor,
+                        );
+                      },
+                      itemCount: value.allDataList.length,
+                    ),
+                  );
+                },
+              ),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }
