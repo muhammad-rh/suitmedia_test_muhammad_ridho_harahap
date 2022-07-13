@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:suitmedia_test_muhammad_ridho_harahap/screens/first_screen/first_screen.dart';
-import 'package:suitmedia_test_muhammad_ridho_harahap/screens/first_screen/first_view_model.dart';
+import 'package:suitmedia_test_muhammad_ridho_harahap/screens/first_screen.dart';
+import 'package:suitmedia_test_muhammad_ridho_harahap/provider/prodiverManager.dart';
+import 'package:suitmedia_test_muhammad_ridho_harahap/screens/second_screen.dart';
+import 'package:suitmedia_test_muhammad_ridho_harahap/screens/third_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -14,7 +16,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (_) => FirstViewModel()),
+        ChangeNotifierProvider(create: (_) => ProviderManager()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -25,8 +27,8 @@ class MyApp extends StatelessWidget {
         initialRoute: '/firstScreen',
         routes: {
           '/firstScreen': (context) => const FirstScreen(),
-          // '/secondScreen' : (context) => const FirstScreen(),
-          // '/thirdScreen' : (context) => const FirstScreen(),
+          '/secondScreen': (context) => const SecondScreen(),
+          '/thirdScreen': (context) => const ThirdScreen(),
         },
       ),
     );

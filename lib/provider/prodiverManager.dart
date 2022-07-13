@@ -1,8 +1,12 @@
+// ignore_for_file: file_names
+
 import 'package:flutter/material.dart';
 import 'package:suitmedia_test_muhammad_ridho_harahap/shared/constant.dart';
 
-class FirstViewModel extends ChangeNotifier {
+class ProviderManager extends ChangeNotifier {
   DataState dataState = DataState.loading;
+
+  String userName = '';
 
   void changeState(DataState state) {
     dataState = state;
@@ -47,6 +51,15 @@ class FirstViewModel extends ChangeNotifier {
           );
         },
       );
+    } catch (e) {
+      print('Error : $e');
+    }
+  }
+
+  void setUserName(String name, var context) {
+    try {
+      userName = name;
+      Navigator.pushNamed(context, '/secondScreen');
     } catch (e) {
       print('Error : $e');
     }

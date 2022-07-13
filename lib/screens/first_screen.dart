@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:suitmedia_test_muhammad_ridho_harahap/screens/first_screen/first_view_model.dart';
+import 'package:suitmedia_test_muhammad_ridho_harahap/provider/prodiverManager.dart';
 import 'package:suitmedia_test_muhammad_ridho_harahap/widgets/button_primary.dart';
 import 'package:suitmedia_test_muhammad_ridho_harahap/widgets/input_text_field.dart';
 
@@ -94,7 +94,7 @@ class _FirstScreenState extends State<FirstScreen> {
                       width: width,
                       onPressed: () async {
                         if (formKey.currentState!.validate()) {
-                          Provider.of<FirstViewModel>(context, listen: false)
+                          Provider.of<ProviderManager>(context, listen: false)
                               .checkPalindrome(
                             nameController.text,
                             palindromeController.text,
@@ -108,7 +108,12 @@ class _FirstScreenState extends State<FirstScreen> {
                       size: 16,
                       fontWeight: FontWeight.w500,
                       width: width,
-                      onPressed: () {},
+                      onPressed: () {
+                        if (formKey.currentState!.validate()) {
+                          Provider.of<ProviderManager>(context, listen: false)
+                              .setUserName(nameController.text, context);
+                        }
+                      },
                     ),
                   ],
                 ),
