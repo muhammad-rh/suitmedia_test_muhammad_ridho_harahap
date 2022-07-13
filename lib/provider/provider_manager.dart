@@ -17,6 +17,8 @@ class ProviderManager extends ChangeNotifier {
   final DataModelApi _dataModelApi = DataModelApi();
   List<Data> allDataList = [];
 
+  Data? selectedData;
+
   void changeState(DataState state) {
     dataState = state;
     notifyListeners();
@@ -61,7 +63,15 @@ class ProviderManager extends ChangeNotifier {
         },
       );
     } catch (e) {
-      print('Error : $e');
+      Fluttertoast.showToast(
+        msg: e.toString(),
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIosWeb: 1,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+        fontSize: 16.0,
+      );
     }
   }
 
@@ -70,21 +80,48 @@ class ProviderManager extends ChangeNotifier {
       userName = name;
       Navigator.pushNamed(context, '/secondScreen');
     } catch (e) {
-      print('Error : $e');
+      Fluttertoast.showToast(
+        msg: e.toString(),
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIosWeb: 1,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+        fontSize: 16.0,
+      );
+    }
+  }
+
+  Future refreshData(var context) async {
+    changeState(DataState.loading);
+    try {
+      changeState(DataState.filled);
+    } catch (e) {
+      changeState(DataState.error);
     }
   }
 
   Future getData(var context) async {
-    try {
-      List<Data> tempDataList = [];
-      tempDataList = await _dataModelApi.getDataByPage(page, context);
+    if (nextPage == true) {
+      try {
+        List<Data> tempDataList = [];
+        tempDataList = await _dataModelApi.getDataByPage(page, context);
 
-      allDataList.addAll(tempDataList);
+        allDataList.addAll(tempDataList);
 
-      changeState(DataState.filled);
-    } catch (e) {
-      print('Error : $e');
-      changeState(DataState.error);
+        changeState(DataState.filled);
+      } catch (e) {
+        Fluttertoast.showToast(
+          msg: e.toString(),
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+          fontSize: 16.0,
+        );
+        changeState(DataState.error);
+      }
     }
   }
 
@@ -103,7 +140,15 @@ class ProviderManager extends ChangeNotifier {
         isLoading = false;
         changeState(DataState.filled);
       } catch (e) {
-        print('Error : $e');
+        Fluttertoast.showToast(
+          msg: e.toString(),
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+          fontSize: 16.0,
+        );
         changeState(DataState.error);
       }
     } else {
@@ -117,5 +162,35 @@ class ProviderManager extends ChangeNotifier {
         fontSize: 16.0,
       );
     }
+  }
+
+  Future selectUser(
+    String url,
+    String firstName,
+    String lastName,
+    String email,
+    var context,
+  ) async {
+    try {
+      selectedData = Data(
+        avatar: url,
+        firstName: firstName,
+        lastName: lastName,
+        email: email,
+      );
+
+      Navigator.pushNamed(context, '/secondScreen');
+    } catch (e) {
+      Fluttertoast.showToast(
+        msg: e.toString(),
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIosWeb: 1,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+        fontSize: 16.0,
+      );
+    }
+    return null;
   }
 }

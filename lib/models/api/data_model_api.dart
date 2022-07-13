@@ -9,7 +9,13 @@ class DataModelApi {
 
   Future<List<Data>> getDataByPage(int page, var context) async {
     try {
-      var response = await _api.dio.get('/users?page=$page');
+      var response = await _api.dio.get(
+        '/users',
+        queryParameters: {
+          "page": page,
+          "per_page": 10,
+        },
+      );
 
       if (response.statusCode == 200) {
         ResponseResultData responseResult =

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:suitmedia_test_muhammad_ridho_harahap/screens/first_screen.dart';
-import 'package:suitmedia_test_muhammad_ridho_harahap/provider/providerManager.dart';
+import 'package:suitmedia_test_muhammad_ridho_harahap/provider/provider_manager.dart';
 import 'package:suitmedia_test_muhammad_ridho_harahap/screens/second_screen.dart';
 import 'package:suitmedia_test_muhammad_ridho_harahap/screens/third_screen.dart';
 

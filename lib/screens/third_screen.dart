@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:suitmedia_test_muhammad_ridho_harahap/provider/providerManager.dart';
+import 'package:suitmedia_test_muhammad_ridho_harahap/provider/provider_manager.dart';
 import 'package:suitmedia_test_muhammad_ridho_harahap/shared/constant.dart';
 import 'package:suitmedia_test_muhammad_ridho_harahap/widgets/data_list_card.dart';
 
@@ -36,7 +36,6 @@ class _ThirdScreenState extends State<ThirdScreen> {
   Widget build(BuildContext context) {
     var mediaQueryData = MediaQuery.of(context);
     var height = mediaQueryData.size.height;
-    var width = mediaQueryData.size.width;
 
     return Scaffold(
       appBar: AppBar(
@@ -55,14 +54,14 @@ class _ThirdScreenState extends State<ThirdScreen> {
           icon: const Icon(Icons.arrow_back_ios),
           color: blueColor,
           onPressed: () {
-            Navigator.pop(context);
+            Navigator.pushNamed(context, '/secondScreen');
           },
         ),
       ),
       body: RefreshIndicator(
         onRefresh: () async {
           Provider.of<ProviderManager>(context, listen: false)
-              .getMoreData(context);
+              .refreshData(context);
         },
         child: SingleChildScrollView(
           child: Column(
@@ -88,36 +87,29 @@ class _ThirdScreenState extends State<ThirdScreen> {
                   }
 
                   return SizedBox(
-                    height: !value.nextPage ? height : 500,
+                    height: height,
                     child: ListView.separated(
                       padding: const EdgeInsets.all(20.0),
                       controller: scrollController,
                       itemBuilder: (context, index) {
-                        if (index == value.allDataList.length) {
-                          return Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Center(
-                              child: Opacity(
-                                opacity: Provider.of<ProviderManager>(context,
-                                            listen: false)
-                                        .isLoading
-                                    ? 1.0
-                                    : 00,
-                                child: const CircularProgressIndicator(),
-                              ),
-                            ),
-                          );
-                        } else {
-                          return GestureDetector(
-                            onTap: () {},
-                            child: DataListCard(
-                              url: value.allDataList[index].avatar!,
-                              firstName: value.allDataList[index].firstName!,
-                              lastName: value.allDataList[index].lastName!,
-                              email: value.allDataList[index].email!,
-                            ),
-                          );
-                        }
+                        return GestureDetector(
+                          onTap: () {
+                            Provider.of<ProviderManager>(context, listen: false)
+                                .selectUser(
+                              value.allDataList[index].avatar!,
+                              value.allDataList[index].firstName!,
+                              value.allDataList[index].lastName!,
+                              value.allDataList[index].email!,
+                              context,
+                            );
+                          },
+                          child: DataListCard(
+                            url: value.allDataList[index].avatar!,
+                            firstName: value.allDataList[index].firstName!,
+                            lastName: value.allDataList[index].lastName!,
+                            email: value.allDataList[index].email!,
+                          ),
+                        );
                       },
                       separatorBuilder: (context, index) {
                         return const Divider(

@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:suitmedia_test_muhammad_ridho_harahap/provider/providerManager.dart';
+import 'package:suitmedia_test_muhammad_ridho_harahap/provider/provider_manager.dart';
 import 'package:suitmedia_test_muhammad_ridho_harahap/shared/constant.dart';
 import 'package:suitmedia_test_muhammad_ridho_harahap/widgets/button_primary.dart';
+import 'package:suitmedia_test_muhammad_ridho_harahap/widgets/data_list_card.dart';
 
 class SecondScreen extends StatefulWidget {
   const SecondScreen({Key? key}) : super(key: key);
@@ -17,7 +18,6 @@ class _SecondScreenState extends State<SecondScreen> {
     var manager = Provider.of<ProviderManager>(context, listen: false);
 
     var mediaQueryData = MediaQuery.of(context);
-    var height = mediaQueryData.size.height;
     var width = mediaQueryData.size.width;
 
     return Scaffold(
@@ -37,7 +37,7 @@ class _SecondScreenState extends State<SecondScreen> {
           icon: const Icon(Icons.arrow_back_ios),
           color: blueColor,
           onPressed: () {
-            Navigator.pop(context);
+            Navigator.pushNamed(context, '/firstScreen');
           },
         ),
       ),
@@ -61,8 +61,15 @@ class _SecondScreenState extends State<SecondScreen> {
                   padding: const EdgeInsets.all(30),
                   child: Align(
                     alignment: Alignment.center,
-                    child: textPoppins(
-                        'Selected User Name', 24, darkColor, FontWeight.w600),
+                    child: manager.selectedData == null
+                        ? textPoppins('Selected User Name', 24, darkColor,
+                            FontWeight.w600)
+                        : DataListCard(
+                            url: manager.selectedData!.avatar!,
+                            firstName: manager.selectedData!.firstName!,
+                            lastName: manager.selectedData!.lastName!,
+                            email: manager.selectedData!.email!,
+                          ),
                   ),
                 ),
                 Padding(
